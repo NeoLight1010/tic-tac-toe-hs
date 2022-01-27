@@ -1,7 +1,15 @@
-module Render (gameAsPicture) where
+module Render (gameAsPicture, screenW, screenH) where
 
 import Graphics.Gloss
 import Game
+
+screenW :: Int
+screenW = 640
+
+screenH :: Int
+screenH = 480
+
+--
 
 pXColor :: Color
 pXColor = red
