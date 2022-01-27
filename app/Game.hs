@@ -5,7 +5,7 @@ import Data.Array
 data Player = X | O deriving (Eq, Show)
 data State = Playing | GameOver (Maybe Player) deriving Show
 
-data Cell = Empty | Full Player deriving Show
+data Cell = Empty | Full Player deriving (Show, Eq)
 type Board = Array (Int, Int) Cell
 
 data Game = Game {
@@ -17,6 +17,7 @@ data Game = Game {
 n :: Int
 n = 3
 
+newGame :: Game
 newGame = Game {
     board = array indexRange $ zip (range indexRange) (repeat Empty),
     turn = X,
