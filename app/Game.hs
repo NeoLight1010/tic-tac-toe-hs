@@ -21,5 +21,5 @@ newGame :: Game
 newGame = Game {
     board = array indexRange $ zip (range indexRange) (repeat Empty),
     turn = X,
-    state = Playing
+    state = GameOver $ Just X
 } where indexRange = ((0, 0), (n - 1, n - 1))

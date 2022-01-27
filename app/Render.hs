@@ -1,8 +1,8 @@
 module Render (gameAsPicture, screenW, screenH) where
 
+import Data.Array
 import Game
 import Graphics.Gloss
-import Data.Array
 
 screenW :: Int
 screenW = 640
@@ -38,9 +38,12 @@ pOPicture = blank
 --
 
 gameAsPicture :: Game -> Picture
-gameAsPicture g = case state g of
-  Playing -> boardAsPlayingPicture (board g)
-  GameOver w -> boardAsGameOverPicture w (board g)
+gameAsPicture g = translate (fromIntegral screenW / (-2))
+                            (fromIntegral screenH / (-2))
+                            p
+  where p = case state g of
+              Playing -> boardAsPlayingPicture (board g)
+              GameOver w -> boardAsGameOverPicture w (board g)
 
 --
 
@@ -73,17 +76,32 @@ oCellsOfBoardAsPicture :: Board -> Picture
 oCellsOfBoardAsPicture = cellsOfBoardAsPicture (Full O) pOPicture
 
 gridPicture :: Picture
-gridPicture = Blank
+gridPicture =
+  pictures $
+    concatMap
+      ( \i ->
+          [ line
+              [ (i * cellW, 0.0),
+                (i * cellW, fromIntegral screenH)
+              ], -- Vertical line
+            line
+              [ (0, i * cellH),
+                (fromIntegral screenW, i * cellH)
+              ]
+          ]
+      )
+      [0.0 .. fromIntegral n]
 
 -- | Takes a Cell and its Picture representation, and returns a Picture with all the cells correctly placed.
 cellsOfBoardAsPicture :: Cell -> Picture -> Board -> Picture
 cellsOfBoardAsPicture c p b =
-    pictures
-    $ map (snapPictureToCell p . fst)
-    $ filter ((== c) . snd)
-    $ assocs b
+  pictures $
+    map (snapPictureToCell p . fst) $
+      filter ((== c) . snd) $
+        assocs b
 
 snapPictureToCell :: Picture -> (Int, Int) -> Picture
 snapPictureToCell p (row, column) = translate x y p
-    where x = fromIntegral column * cellW + cellW * 0.5
-          y = fromIntegral row * cellH + cellH * 0.5
+  where
+    x = fromIntegral column * cellW + cellW * 0.5
+    y = fromIntegral row * cellH + cellH * 0.5
