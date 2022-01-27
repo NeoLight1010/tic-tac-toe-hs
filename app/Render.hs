@@ -67,17 +67,17 @@ boardAsPicture b =
     ]
 
 xCellsOfBoardAsPicture :: Board -> Picture
-xCellsOfBoardAsPicture = cellsOfBoardPicture (Full X) pXPicture
+xCellsOfBoardAsPicture = cellsOfBoardAsPicture (Full X) pXPicture
 
 oCellsOfBoardAsPicture :: Board -> Picture
-oCellsOfBoardAsPicture = cellsOfBoardPicture (Full O) pOPicture
+oCellsOfBoardAsPicture = cellsOfBoardAsPicture (Full O) pOPicture
 
 gridPicture :: Picture
 gridPicture = Blank
 
 -- | Takes a Cell and its Picture representation, and returns a Picture with all the cells correctly placed.
-cellsOfBoardPicture :: Cell -> Picture -> Board -> Picture
-cellsOfBoardPicture c p b =
+cellsOfBoardAsPicture :: Cell -> Picture -> Board -> Picture
+cellsOfBoardAsPicture c p b =
     pictures
     $ map (snapPictureToCell p . fst)
     $ filter ((== c) . snd)
