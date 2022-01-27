@@ -10,4 +10,4 @@ window :: Display
 window = InWindow "Tic-tac-toe" (640, 480) (50, 50)
 
 main :: IO ()
-main = play window white 30 game gameAsPicture transformGame (const id)
+main = play window white 30 newGame gameAsPicture transformGame (const id)
